@@ -48,11 +48,17 @@ class DataBase:
 		"""
 		try:
 			self.cursor.execute("SELECT tags FROM users WHERE id=:id", {"id": id})
-			old_tags = self.cursor.fetchall()[0][0]
-			old_tags = set(old_tags.split())
-			
+			data = self.cursor.fetchall()
+			if data:
+
+				old_tags = data[0][0]
+				old_tags = set(old_tags.split())
+			else:
+				old_tags = set()
+
 			old_tags.update(set(message.split()))
-			
+
+			d = {"newTags": " ".join(list(old_tags)), "id": id}
 			self.cursor.execute("UPDATE users SET tags=:newTags WHERE id=:id",
 								{"newTags": " ".join(list(old_tags)), "id": id})
 			self.connection.commit()
