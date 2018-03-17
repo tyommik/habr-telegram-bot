@@ -19,7 +19,7 @@ from DataBase import DataBase
 from Log import Log
 
 
-bot = telebot.TeleBot(token=config.BOT_TOKEN)
+bot = telebot.TeleBot(config.BOT_TOKEN)
 logAdapter = Log()
 dbAdapter = DataBase(main_log=logAdapter)
 
@@ -74,6 +74,7 @@ def send_articles():
 						common_tags = [i for i in users[user] if i in article_tags]
 						if len(users[user]) == 0 or len(common_tags) != 0:
 							try:
+								message_text = "<b>" + ' '.join([f"*{tag}" for tag in common_tags]) + "</b>" + "\n" + message_text
 								bot.send_message(user, message_text, parse_mode="HTML")
 							except Exception as e:
 								logAdapter.error(str(e))
