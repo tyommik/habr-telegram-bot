@@ -22,7 +22,10 @@ from Log import Log
 bot = telebot.TeleBot(config.BOT_TOKEN)
 logAdapter = Log()
 dbAdapter = DataBase(main_log=logAdapter)
-
+telebot.apihelper.proxy = {'https':'socks5://{user}:{password}@{proxy_address}:{port}'.format(user = config.PROXY_USER,
+																					password=config.PROXY_PASSWORD,
+																					proxy_address=config.PROXY_SERVER,
+																					 port=config.PROXY_PORT )}
 
 # Check
 def parse_summary(summary):
